@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    # The gemspec file is an exception, it breaks all the rules
+    - '*.gemspec'
+# you've already upped this. twice.
+Metrics/LineLength:
+  Max: 160
