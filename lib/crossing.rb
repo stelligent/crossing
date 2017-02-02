@@ -8,8 +8,9 @@ class Crossing
     end
     @s3_client = s3_client
   end
-  def put(bucket, filename, content)
-    @s3_client.put_object(bucket: bucket, key: filename, body: content)
+  def put(bucket, filename)
+    file = File.new(filename, "r")
+    @s3_client.put_object(bucket: bucket, key: filename, body: file.read)
   end
 
   def get(bucket, file)
