@@ -2,7 +2,7 @@
 require 'optparse'
 require 'crossing'
 
-options = {:bucket => nil, :file => nil, :key => nil}
+options = { bucket: nil, file: nil, key: nil }
 arguments = OptionParser.new do |opts|
   opts.banner = 'Usage: crossing [options]'
 
@@ -44,8 +44,8 @@ s3 = Aws::S3::Encryption::Client.new(
   kms_client: kms
 )
 encrypt = Crossing.new(s3)
-if options[:action] == "put"
-  encrypt.put(options[:bucket], options[:file], "This is a test")
+if options[:action] == 'put'
+  encrypt.put(options[:bucket], options[:file], 'This is a test')
 else
   puts "I don't know how to handle that action."
 end
