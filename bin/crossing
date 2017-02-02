@@ -1,3 +1,51 @@
 #!/usr/bin/env ruby
+require 'optparse'
+require 'crossing'
 
-puts 'that worked'
+options = {:bucket => nil, :file => nil, :key => nil}
+arguments = OptionParser.new do |opts|
+  opts.banner = 'Usage: crossing [options]'
+
+  opts.separator ''
+
+  # Read in arguments
+  opts.on('-b', '--bucket bucket', 'Bucket') do |bucket|
+    options[:bucket] = bucket
+  end
+
+  opts.on('-f', '--file file', 'File') do |file|
+    options[:file] = file
+  end
+
+  opts.on('-k', '--key key', 'Key') do |key|
+    options[:key] = key
+  end
+
+  opts.on('-a', '--action action', 'Action') do |action|
+    options[:action] = action
+  end
+
+  opts.on('-h', '--help', 'Displays Help') do
+    puts opts
+    exit
+  end
+end
+
+arguments.parse!
+
+# options.each do |key|
+#   if options[key].nil?
+#     raise "#{key} is required...aborting"
+#   end
+# end
+kms = Aws::KMS::Client.new
+s3 = Aws::S3::Encryption::Client.new(
+  kms_key_id: options[:key],
+  kms_client: kms
+)
+encrypt = Crossing.new(s3)
+if options[:action] == "put"
+  encrypt.put(options[:bucket], options[:file], "This is a test")
+else
+  puts "I don't know how to handle that action."
+end
