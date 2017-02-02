@@ -2,4 +2,4 @@ machine:
   timezone:
     America/New_York
   ruby:
-    version: 1.9.3-p0-falcon
+    version: 1.9.3
