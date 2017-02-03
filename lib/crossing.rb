@@ -32,3 +32,6 @@ end
 
 class CrossingFileNotFoundException < CrossingError
 end
+
+class CrossingFileExistsException < CrossingError
+end
