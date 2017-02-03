@@ -13,6 +13,16 @@ RSpec.describe 'Crossing' do
       client.put(bucket, filename)
     end
 
+    it 'will upload a file at any path' do
+      s3 = double('AWS::S3::Encryption::Client')
+      bucket = 'mock-bucket-name'
+      filename = 'spec/crossing_spec.rb'
+      content = File.new(filename, 'r').read
+      allow(s3).to receive(:put_object).with(bucket: bucket, key: 'crossing_spec.rb', body: content)
+      client = Crossing.new(s3)
+      client.put(bucket, filename)
+    end
+
     it 'will raise an error for missing file' do
       s3 = double('AWS::S3::Encryption::Client')
       file = SecureRandom.uuid
