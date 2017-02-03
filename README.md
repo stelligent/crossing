@@ -29,7 +29,6 @@ Downloading is basically the same:
     crossing get \
       --file path/to/your/dest/file \
       --bucket your-bucket \
-      --kms-key-id abcde-12345-abcde-12345 \
       --region 'us-east-1'
 
 ### :children_crossing: License
