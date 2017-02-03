@@ -11,7 +11,7 @@ class Crossing
     begin
       file = File.new(filename, 'r')
     rescue
-      raise CrossingFileNotFoundException.new("File not found: #{filename}")
+      raise CrossingFileNotFoundException, "File not found: #{filename}"
     end
 
     @s3_client.put_object(bucket: bucket, key: filename.split('/').last, body: file.read)
@@ -19,7 +19,7 @@ class Crossing
 
   def get(filesystem, bucket, file)
     if filesystem.exist?(file)
-      raise CrossingFileExistsException.new("File #{file} already exists, will not overwrite.")
+      raise CrossingFileExistsException, "File #{file} already exists, will not overwrite."
     end
 
     content = @s3_client.get_object(bucket: bucket, key: file).body.read

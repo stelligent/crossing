@@ -36,7 +36,6 @@ cmd_opts =
     Trollop.die 'usage: crossing [get|put] [parameters]'
   end
 
-
 kms = Aws::KMS::Client.new region: global_opts[:region]
 s3 = Aws::S3::Encryption::Client.new(
   kms_key_id: cmd_opts[:kmskeyid],
