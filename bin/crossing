@@ -49,7 +49,7 @@ case cmd
 when 'put'
   crossing.put(cmd_opts[:bucket], cmd_opts[:file])
 when 'get'
-  crossing.get(cmd_opts[:bucket], cmd_opts[:file])
+  crossing.get(File, cmd_opts[:bucket], cmd_opts[:file])
 else
   raise "unknown subcommand #{cmd}"
 end
