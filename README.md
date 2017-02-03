@@ -18,11 +18,19 @@ To install the gem:
 ### :children_crossing: Usage
 Crossing is designed to be dead simple to use. To upload, you just need to provide a filepath, bucket location, region and which KMS key to use.
 
-    crossing put --file path/to/your/src/file --bucket your-bucket --kms-key-id abcde-12345-abcde-12345 --region 'us-east-1'
+    crossing put \
+      --file path/to/your/src/file \
+      --bucket your-bucket \
+      --kms-key-id abcde-12345-abcde-12345 \
+      --region 'us-east-1'
 
-Downloading is basically the same, except no key id required.
+Downloading is basically the same:
 
-    crossing get --file path/to/your/dest/file --bucket your-bucket --region 'us-east-1'
+    crossing get \
+      --file path/to/your/dest/file \
+      --bucket your-bucket \
+      --kms-key-id abcde-12345-abcde-12345 \
+      --region 'us-east-1'
 
 ### :children_crossing: License
 

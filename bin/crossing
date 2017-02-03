@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
-require 'optparse'
+
+require 'trollop'
 require 'crossing'
 
-SUB_COMMANDS = %w(store retrieve)
+SUB_COMMANDS = %w(get put).freeze
 global_opts = Trollop.options do
   opt :region, 'The region to look for the KMS Key in', default: 'us-east-1'
   banner 'utility for storing and retrieving files in S3 in a secure manner
@@ -23,20 +24,21 @@ cmd_opts =
     Trollop.options do
       opt :file, 'the path to the file to store', required: true, type: String
       opt :bucket, 'the bucket to store the file in', required: true, type: String
-      opt :kms-key-id, 'the kms key id of the master KMS key (conditionally required for put)', type: String
+      opt :kmskeyid, 'the kms key id of the master KMS key', required: true, type: String
     end
   when 'get'
     Trollop.options do
       opt :file, 'the name of the file to retrieve', required: true, type: String
       opt :bucket, 'the bucket the file is stored in', required: true, type: String
+      opt :kmskeyid, 'the kms key id of the master KMS key', required: true, type: String
     end
   else
     Trollop.die 'usage: crossing [get|put] [parameters]'
   end
 
-kms = Aws::KMS::Client.new region: opts[:region]
+kms = Aws::KMS::Client.new region: global_opts[:region]
 s3 = Aws::S3::Encryption::Client.new(
-  kms_key_id: opts[:kms-key-id],
+  kms_key_id: cmd_opts[:kmskeyid],
   kms_client: kms
 )
 
@@ -44,9 +46,9 @@ crossing = Crossing.new(s3)
 
 case cmd
 when 'put'
-  crossing.put(options[:bucket], options[:file], 'This is a test')
+  crossing.put(cmd_opts[:bucket], cmd_opts[:file])
 when 'get'
-  puts 'not implemented yet'
+  crossing.get(File, cmd_opts[:bucket], cmd_opts[:file])
 else
-  fail "unknown subcommand #{cmd}"
+  raise "unknown subcommand #{cmd}"
 end
