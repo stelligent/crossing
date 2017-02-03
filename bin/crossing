@@ -30,12 +30,12 @@ cmd_opts =
     Trollop.options do
       opt :file, 'the name of the file to retrieve', required: true, type: String
       opt :bucket, 'the bucket the file is stored in', required: true, type: String
-      opt :kmskeyid, 'the kms key id of the master KMS key', required: true, type: String
     end
   else
     Trollop.die 'usage: crossing [get|put] [parameters]'
   end
 
+cmd_opts[:kmskeyid] ||= '_nokey_decrypt_'
 kms = Aws::KMS::Client.new region: global_opts[:region]
 s3 = Aws::S3::Encryption::Client.new(
   kms_key_id: cmd_opts[:kmskeyid],
