@@ -1,0 +1,4 @@
+HandleExceptions:
+  Enabled: false
+Metrics/LineLength:
+  Max: 160

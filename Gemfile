@@ -7,3 +7,6 @@ gem 'aws-sdk'
 gem 'cucumber'
 gem 'rubocop', '=0.41.2'
 gem 'rubygems-tasks'
+gem 'trollop'
+
+gem 'simplecov', require: false, group: :test
