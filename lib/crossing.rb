@@ -18,7 +18,11 @@ class Crossing
   end
 
   def get(bucket, file)
-    puts @s3_client.get_object(bucket: bucket, key: file).body.read
+    if File.exist?(file)
+      raise CrossingFileExistsException.new("File #{file} already exists, will not overwrite.")
+    end
+
+    contents = @s3_client.get_object(bucket: bucket, key: file).body.read
   end
 end
 

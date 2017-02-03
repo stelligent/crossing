@@ -46,5 +46,6 @@ RSpec.describe 'Crossing' do
       client = Crossing.new(s3)
       client.get(bucket, filename)
     end
+    
   end
 end
