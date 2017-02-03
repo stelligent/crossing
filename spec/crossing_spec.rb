@@ -4,10 +4,13 @@ RSpec.describe 'Crossing' do
   context 'it can put files' do
     it 'will store the file in s3' do
       s3 = double('AWS::S3::Encryption::Client')
-      allow(s3).to receive(:put_object).with(bucket: 'bucketname', key: 'gemtest.txt', body: "test\n")
+      bucket = 'mock-bucket-name'
+      filename = 'crossing.gemspec'
+      content = File.new(filename, 'r').read
+      allow(s3).to receive(:put_object).with(bucket: bucket, key: filename, body: content)
       client = Crossing.new(s3)
       puts Dir.pwd
-      client.put('bucketname', 'gemtest.txt')
+      client.put(bucket, filename)
     end
   end
   context 'it can get files' do
