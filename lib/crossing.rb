@@ -22,7 +22,8 @@ class Crossing
       raise CrossingFileExistsException.new("File #{file} already exists, will not overwrite.")
     end
 
-    contents = @s3_client.get_object(bucket: bucket, key: file).body.read
+    content = @s3_client.get_object(bucket: bucket, key: file).body.read
+    File.write(file, content)
   end
 end
 
