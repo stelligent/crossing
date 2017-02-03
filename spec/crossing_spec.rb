@@ -6,8 +6,9 @@ class S3Result
   def initialize
     @body = self
   end
+
   def read
-    "content"
+    'content'
   end
 end
 
@@ -39,13 +40,14 @@ RSpec.describe 'Crossing' do
       begin
         Crossing.new(s3).put('bucket', file)
         raise("should've thrown an exception for non-existent file")
-      rescue CrossingFileNotFoundException => e
+      rescue CrossingFileNotFoundException
         # all good
       rescue StandardError => e
         raise("threw unexpected exception #{e}")
       end
     end
   end
+
   context 'it can get files' do
     it 'will retrieve the file in s3' do
       s3 = double('AWS::S3::Encryption::Client')
@@ -73,7 +75,7 @@ RSpec.describe 'Crossing' do
       client = Crossing.new(s3)
       begin
         client.get(filesystem, bucket, filename)
-      rescue CrossingFileExistsException => e
+      rescue CrossingFileExistsException
         # all good
       rescue StandardError => e
         raise("threw unexpected exception #{e}")
