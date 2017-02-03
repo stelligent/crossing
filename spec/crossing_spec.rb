@@ -51,14 +51,14 @@ RSpec.describe 'Crossing' do
   context 'it can get files' do
     it 'will retrieve the file in s3' do
       s3 = double('AWS::S3::Encryption::Client')
+      bucket = 'mock-bucket-name'
+      filename = 'mock-file-name'
       expect(s3).to receive(:get_object).with(bucket: bucket, key: filename).and_return(S3Result.new)
 
       filesystem = double('File')
       allow(filesystem).to receive(:exist?)
       allow(filesystem).to receive(:write)
 
-      bucket = 'mock-bucket-name'
-      filename = 'mock-file-name'
 
       client = Crossing.new(s3)
       client.get(filesystem, bucket, filename)
