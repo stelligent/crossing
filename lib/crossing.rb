@@ -18,6 +18,7 @@ class Crossing
   end
 
   def get(bucket, file)
+    @s3_client.get_object(bucket: bucket, key: file)
   end
 end
 

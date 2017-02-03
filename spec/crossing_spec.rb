@@ -8,7 +8,7 @@ RSpec.describe 'Crossing' do
       bucket = 'mock-bucket-name'
       filename = 'crossing.gemspec'
       content = File.new(filename, 'r').read
-      allow(s3).to receive(:put_object).with(bucket: bucket, key: filename, body: content)
+      expect(s3).to receive(:put_object).with(bucket: bucket, key: filename, body: content)
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -18,7 +18,7 @@ RSpec.describe 'Crossing' do
       bucket = 'mock-bucket-name'
       filename = 'spec/crossing_spec.rb'
       content = File.new(filename, 'r').read
-      allow(s3).to receive(:put_object).with(bucket: bucket, key: 'crossing_spec.rb', body: content)
+      expect(s3).to receive(:put_object).with(bucket: bucket, key: 'crossing_spec.rb', body: content)
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -39,6 +39,12 @@ RSpec.describe 'Crossing' do
   end
   context 'it can get files' do
     it 'will retrieve the file in s3' do
+      s3 = double('AWS::S3::Encryption::Client')
+      bucket = 'mock-bucket-name'
+      filename = 'mock-file-name'
+      expect(s3).to receive(:get_object).with(bucket: bucket, key: filename)
+      client = Crossing.new(s3)
+      client.get(bucket, filename)
     end
   end
 end
