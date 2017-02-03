@@ -24,11 +24,12 @@ Crossing is designed to be dead simple to use. To upload, you just need to provi
       --kms-key-id abcde-12345-abcde-12345 \
       --region 'us-east-1'
 
-Downloading is basically the same, except no key id required.
+Downloading is basically the same:
 
     crossing get \
       --file path/to/your/dest/file \
       --bucket your-bucket \
+      --kms-key-id abcde-12345-abcde-12345 \
       --region 'us-east-1'
 
 ### :children_crossing: License
