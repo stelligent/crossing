@@ -59,7 +59,6 @@ RSpec.describe 'Crossing' do
       allow(filesystem).to receive(:exist?)
       allow(filesystem).to receive(:write)
 
-
       client = Crossing.new(s3)
       client.get(filesystem, bucket, filename)
     end

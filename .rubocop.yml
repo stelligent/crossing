@@ -1,7 +1,4 @@
 AllCops:
-  Exclude:
-    # The gemspec file is an exception, it breaks all the rules
-    - '*.gemspec'
-# you've already upped this. twice.
+  TargetRubyVersion: 1.9
 Metrics/LineLength:
-  Max: 160
+  Max: 100
