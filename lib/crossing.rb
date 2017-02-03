@@ -15,3 +15,9 @@ class Crossing
   def get(bucket, file)
   end
 end
+
+class CrossError < StandardError
+end
+
+class CrossingFileNotFoundException < CrossingError
+end
