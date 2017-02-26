@@ -13,7 +13,11 @@ class Crossing
       raise CrossingFileNotFoundException, "File not found: #{filename}"
     end
 
-    @s3_client.put_object(bucket: bucket, key: filename.split('/').last, body: file.read)
+    put_content(bucket, filename.split('/').last, file.read)
+  end
+
+  def put_content(bucket, filename, content)
+    @s3_client.put_object(bucket: bucket, key: filename.split('/').last, body: content)
   end
 
   def get(filesystem, bucket, file)
@@ -21,8 +25,12 @@ class Crossing
       raise CrossingFileExistsException, "File #{file} already exists, will not overwrite."
     end
 
-    content = @s3_client.get_object(bucket: bucket, key: file).body.read
+    content = get_content(bucket, file)
     filesystem.write(file, content)
+  end
+
+  def get_content(bucket, file)
+    @s3_client.get_object(bucket: bucket, key: file).body.read
   end
 end
 
