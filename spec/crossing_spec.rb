@@ -27,7 +27,7 @@ RSpec.describe 'Crossing' do
 
     it 'will tell you that you need to pass in an S3 client' do
       begin
-        Crossing.new(Aws::S3::Client.new)
+        Crossing.new(Aws::S3::Client.new region: 'us-east-1')
         raise("should've thrown an exception for not passing in an encrypted S3 client")
       rescue CrossingMisconfigurationException
         # all good
@@ -37,7 +37,7 @@ RSpec.describe 'Crossing' do
     end
     it 'will will allow only Aws::S3::Encryption::Client' do
       begin
-        Crossing.new(s3 = Aws::S3::Encryption::Client.new(encryption_key: "asdfasdfasdfasdf"))
+        Crossing.new(s3 = Aws::S3::Encryption::Client.new(encryption_key: "asdfasdfasdfasdf", region: 'us-east-1'))
       rescue StandardError => e
         raise("threw unexpected exception #{e}, #{e.inspect}")
       end
