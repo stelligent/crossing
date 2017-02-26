@@ -13,12 +13,44 @@ class S3Result
 end
 
 RSpec.describe 'Crossing' do
+  context 'it gives you useful errors' do
+    it 'will tell you that you need to pass in a parameter' do
+      begin
+        Crossing.new
+        raise("should've thrown an exception for not passing in an S3 client")
+      rescue ArgumentError
+        # all good
+      rescue StandardError => e
+        raise("threw unexpected exception #{e}, #{e.inspect}")
+      end
+    end
+
+    it 'will tell you that you need to pass in an S3 client' do
+      begin
+        Crossing.new(Aws::S3::Client.new region: 'us-east-1')
+        raise("should've thrown an exception for not passing in an encrypted S3 client")
+      rescue CrossingMisconfigurationException
+        # all good
+      rescue StandardError => e
+        raise("threw unexpected exception #{e}, #{e.inspect}")
+      end
+    end
+    it 'will will allow only Aws::S3::Encryption::Client' do
+      begin
+        Crossing.new(s3 = Aws::S3::Encryption::Client.new(encryption_key: "asdfasdfasdfasdf", region: 'us-east-1'))
+      rescue StandardError => e
+        raise("threw unexpected exception #{e}, #{e.inspect}")
+      end
+    end
+  end
+
   context 'it can put files' do
     it 'will store the file in s3' do
       s3 = double('AWS::S3::Encryption::Client')
       bucket = 'mock-bucket-name'
       filename = 'crossing.gemspec'
       content = File.new(filename, 'r').read
+      expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:put_object).with(bucket: bucket, key: filename, body: content)
       client = Crossing.new(s3)
       client.put(bucket, filename)
@@ -29,6 +61,7 @@ RSpec.describe 'Crossing' do
       bucket = 'mock-bucket-name'
       filename = 'spec/crossing_spec.rb'
       content = File.new(filename, 'r').read
+      expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:put_object).with(bucket: bucket, key: 'crossing_spec.rb', body: content)
       client = Crossing.new(s3)
       client.put(bucket, filename)
@@ -36,6 +69,7 @@ RSpec.describe 'Crossing' do
 
     it 'will raise an error for missing file' do
       s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
       file = SecureRandom.uuid
       begin
         Crossing.new(s3).put('bucket', file)
@@ -46,11 +80,23 @@ RSpec.describe 'Crossing' do
         raise("threw unexpected exception #{e}")
       end
     end
+
+    it 'will raw content in s3' do
+      s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
+      bucket = 'mock-bucket-name'
+      filename = 'crossing.gemspec'
+      content = File.new(filename, 'r').read
+      expect(s3).to receive(:put_object).with(bucket: bucket, key: filename, body: content)
+      client = Crossing.new(s3)
+      client.put_content(bucket, filename, content)
+    end
   end
 
   context 'it can get files' do
     it 'will retrieve the file in s3' do
       s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)      
       bucket = 'mock-bucket-name'
       filename = 'mock-file-name'
       expect(s3).to receive(:get_object).with(bucket: bucket, key: filename).and_return(S3Result.new)
@@ -65,6 +111,7 @@ RSpec.describe 'Crossing' do
 
     it 'will not overwrite local files' do
       s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
       filesystem = double('File')
       allow(filesystem).to receive(:exist?).and_return true
 
@@ -74,6 +121,23 @@ RSpec.describe 'Crossing' do
       client = Crossing.new(s3)
       begin
         client.get(filesystem, bucket, filename)
+      rescue CrossingFileExistsException
+        # all good
+      rescue StandardError => e
+        raise("threw unexpected exception #{e}")
+      end
+    end
+
+    it 'will deliver the file contents without writing a file' do
+      s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
+      bucket = 'mock-bucket-name'
+      filename = 'mock-file-name'
+      expect(s3).to receive(:get_object).with(bucket: bucket, key: filename).and_return(S3Result.new)
+
+      client = Crossing.new(s3)
+      begin
+        client.get_content(bucket, filename)
       rescue CrossingFileExistsException
         # all good
       rescue StandardError => e
