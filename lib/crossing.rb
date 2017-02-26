@@ -2,7 +2,9 @@ require 'aws-sdk'
 
 # Documentation incoming
 class Crossing
-  def initialize(s3_client = Aws::S3::Client.new)
+  def initialize(s3_client)
+    raise CrossingMisconfigurationException if s3_client.nil?
+    raise CrossingMisconfigurationException unless s3_client.is_a? Aws::S3::Encryption::Client
     @s3_client = s3_client
   end
 
@@ -35,6 +37,9 @@ class Crossing
 end
 
 class CrossingError < StandardError
+end
+
+class CrossingMisconfigurationException < CrossingError
 end
 
 class CrossingFileNotFoundException < CrossingError
