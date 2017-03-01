@@ -22,13 +22,14 @@ class Crossing
     @s3_client.put_object(bucket: bucket, key: filename.split('/').last, body: content)
   end
 
-  def get(filesystem, bucket, file)
-    if filesystem.exist?(file)
-      raise CrossingFileExistsException, "File #{file} already exists, will not overwrite."
+  def get(bucket, file)
+    if File.exist?(file)
+      raise(CrossingFileExistsException,
+            "File #{file} already exists, will not overwrite.")
     end
 
     content = get_content(bucket, file)
-    filesystem.write(file, content)
+    File.open(file, 'w') { |f| f.write(content) }
   end
 
   def get_content(bucket, file)
