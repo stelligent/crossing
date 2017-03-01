@@ -9,13 +9,11 @@ class Crossing
   end
 
   def put(bucket, filename)
-    begin
-      file = File.new(filename, 'r')
-    rescue
-      raise CrossingFileNotFoundException, "File not found: #{filename}"
+    File.open(filename, 'r') do |file|
+      put_content(bucket, File.basename(filename), file.read)
     end
-
-    put_content(bucket, filename.split('/').last, file.read)
+  rescue Errno::ENOENT
+    raise CrossingFileNotFoundException, "File not found: #{filename}"
   end
 
   def put_content(bucket, filename, content)
