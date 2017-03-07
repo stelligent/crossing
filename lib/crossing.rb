@@ -9,26 +9,27 @@ class Crossing
   end
 
   def put(bucket, filename)
-    begin
-      file = File.new(filename, 'r')
-    rescue
-      raise CrossingFileNotFoundException, "File not found: #{filename}"
+    File.open(filename, 'r') do |file|
+      put_content(bucket, File.basename(filename), file.read)
     end
-
-    put_content(bucket, filename.split('/').last, file.read)
+  rescue Errno::ENOENT
+    raise CrossingFileNotFoundException, "File not found: #{filename}"
   end
 
   def put_content(bucket, filename, content)
-    @s3_client.put_object(bucket: bucket, key: filename.split('/').last, body: content)
+    @s3_client.put_object(bucket: bucket,
+                          key: File.basename(filename),
+                          body: content)
   end
 
-  def get(filesystem, bucket, file)
-    if filesystem.exist?(file)
-      raise CrossingFileExistsException, "File #{file} already exists, will not overwrite."
+  def get(bucket, file)
+    if File.exist?(file)
+      raise(CrossingFileExistsException,
+            "File #{file} already exists, will not overwrite.")
     end
 
     content = get_content(bucket, file)
-    filesystem.write(file, content)
+    File.open(file, 'w') { |f| f.write(content) }
   end
 
   def get_content(bucket, file)

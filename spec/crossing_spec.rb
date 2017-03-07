@@ -99,26 +99,24 @@ describe 'Crossing' do
       expect(s3).to receive(:get_object).with(bucket: bucket, key: filename)
         .and_return(S3Result.new)
 
-      filesystem = double('File')
-      allow(filesystem).to receive(:exist?)
-      allow(filesystem).to receive(:write)
+      allow(File).to receive(:exist?)
+      allow(File).to receive(:write)
 
       client = Crossing.new(s3)
-      client.get(filesystem, bucket, filename)
+      client.get(bucket, filename)
     end
 
     it 'will not overwrite local files' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
-      filesystem = double('File')
-      allow(filesystem).to receive(:exist?).and_return true
+      allow(File).to receive(:exist?).and_return true
 
       bucket = 'mock-bucket-name'
       filename = 'mock-file-name'
 
       expect do
         client = Crossing.new(s3)
-        client.get(filesystem, bucket, filename)
+        client.get(bucket, filename)
       end.to raise_error(CrossingFileExistsException)
     end
 
@@ -126,8 +124,7 @@ describe 'Crossing' do
       bucket = 'mock-bucket-name'
       filename = 'mock-file-name'
 
-      filesystem = double('File')
-      allow(filesystem).to receive(:exist?).and_return true
+      allow(File).to receive(:exist?).and_return true
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
