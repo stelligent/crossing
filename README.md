@@ -21,15 +21,13 @@ Crossing is designed to be dead simple to use. To upload, you just need to provi
     crossing put \
       --file path/to/your/src/file \
       --bucket your-bucket \
-      --kms-key-id abcde-12345-abcde-12345 \
-      --region 'us-east-1'
+      --kmskeyid abcde-12345-abcde-12345
 
 Downloading is basically the same:
 
     crossing get \
       --file path/to/your/dest/file \
-      --bucket your-bucket \
-      --region 'us-east-1'
+      --bucket your-bucket
 
 ### :children_crossing: License
 
