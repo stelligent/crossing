@@ -22,14 +22,16 @@ class Crossing
                           body: content)
   end
 
-  def get(bucket, file, mode = 'w')
+  def get(bucket, file, binary = false)
     if File.exist?(file)
       raise(CrossingFileExistsException,
             "File #{file} already exists, will not overwrite.")
     end
 
+    binary ? 'wb' : 'w'
+
     content = get_content(bucket, file)
- 
+
     File.open(file, mode) { |f| f.write(content) }
   end
 

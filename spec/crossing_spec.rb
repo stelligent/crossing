@@ -96,7 +96,7 @@ describe 'Crossing' do
   after :context do
     File.delete(@filename)
   end
-  
+
   context 'it can get files' do
     it 'will retrieve the file in s3' do
       bucket = 'mock-bucket-name'
@@ -126,16 +126,16 @@ describe 'Crossing' do
       end.to raise_error(CrossingFileExistsException)
     end
 
-    it 'will default to File mode w if not give a mode argument' do
+    it 'will default to binary false / file mode w' do
       bucket = 'mock-bucket-name'
-      mode = 'w'
+      expected_mode = 'w'
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
-                      .and_return(S3Result.new)
+        .and_return(S3Result.new)
 
-      allow(File).to receive(:open).with(@filename, mode)
+      allow(File).to receive(:open).with(@filename, expected_mode)
       allow(File).to receive(:exist?)
       allow(File).to receive(:write)
 
@@ -145,19 +145,19 @@ describe 'Crossing' do
 
     it 'will take an optional mode argument' do
       bucket = 'mock-bucket-name'
-      mode = 'wb'
+      expected_mode = 'wb'
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
-                      .and_return(S3Result.new)
+        .and_return(S3Result.new)
 
-      allow(File).to receive(:open).with(@filename, mode)
+      allow(File).to receive(:open).with(@filename, expected_mode)
       allow(File).to receive(:exist?)
       allow(File).to receive(:write)
 
       client = Crossing.new(s3)
-      client.get(bucket, @filename, mode)
+      client.get(bucket, @filename, true)
     end
 
     it 'will deliver the file contents without writing a file' do
