@@ -31,7 +31,7 @@ cmd_opts =
       opt :file, 'the name of the file to retrieve', required: true, type: String
       opt :bucket, 'the bucket the file is stored in', required: true, type: String
       opt :kmskeyid, 'the kms key id of the master KMS key', required: false, type: String
-      opt :binary, 'flag to indicate binary write mode', required: false, default: false
+      opt :binary, 'flag to indicate binary write mode', required: false, default: true
     end
   else
     Trollop.die 'usage: crossing [get|put] [parameters]'
@@ -50,7 +50,7 @@ case cmd
 when 'put'
   crossing.put(cmd_opts[:bucket], cmd_opts[:file])
 when 'get'
-  crossing.get(cmd_opts[:bucket], cmd_opts[:file], cmd_opts[:binary])
+  crossing.get(cmd_opts[:bucket], cmd_opts[:file])
 else
   raise "unknown subcommand #{cmd}"
 end

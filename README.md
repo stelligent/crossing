@@ -29,6 +29,12 @@ Downloading is basically the same:
       --file path/to/your/dest/file \
       --bucket your-bucket
 
+For certificates, you should pass the optional binary flag to ensure the cert gets written properly.
+    crossing get \
+      --file path/to/your/dest/file \
+      --bucket your-bucket
+      --binary
+
 ### :children_crossing: License
 
 Refer to [LICENSE.md](LICENSE.md)
