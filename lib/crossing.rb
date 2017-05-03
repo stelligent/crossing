@@ -28,7 +28,7 @@ class Crossing
             "File #{file} already exists, will not overwrite.")
     end
 
-    binary ? 'wb' : 'w'
+    mode = binary ? 'wb' : 'w'
 
     content = get_content(bucket, file)
 
