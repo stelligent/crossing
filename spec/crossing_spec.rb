@@ -1,7 +1,6 @@
 require_relative '../lib/crossing'
 require 'securerandom'
 require 'spec_helper'
-require 'pry'
 
 class S3Result
   attr_accessor :body
