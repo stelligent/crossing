@@ -1,6 +1,7 @@
 require_relative '../lib/crossing'
 require 'securerandom'
 require 'spec_helper'
+require 'pry'
 
 class S3Result
   attr_accessor :body
@@ -113,22 +114,9 @@ describe 'Crossing' do
       client.get(bucket, @filename)
     end
 
-    it 'will not overwrite local files' do
-      s3 = double('AWS::S3::Encryption::Client')
-      expect(s3).to receive(:is_a?).and_return(true)
-      allow(File).to receive(:exist?).and_return true
-
+    it 'will use wb mode' do
       bucket = 'mock-bucket-name'
-
-      expect do
-        client = Crossing.new(s3)
-        client.get(bucket, @filename)
-      end.to raise_error(CrossingFileExistsException)
-    end
-
-    it 'will default to binary false / file mode w' do
-      bucket = 'mock-bucket-name'
-      expected_mode = 'w'
+      expected_mode = 'wb'
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
@@ -143,21 +131,17 @@ describe 'Crossing' do
       client.get(bucket, @filename)
     end
 
-    it 'will take an optional mode argument' do
-      bucket = 'mock-bucket-name'
-      expected_mode = 'wb'
-
+    it 'will not overwrite local files' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
-      expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
-        .and_return(S3Result.new)
+      allow(File).to receive(:exist?).and_return true
 
-      allow(File).to receive(:open).with(@filename, expected_mode)
-      allow(File).to receive(:exist?)
-      allow(File).to receive(:write)
+      bucket = 'mock-bucket-name'
 
-      client = Crossing.new(s3)
-      client.get(bucket, @filename, true)
+      expect do
+        client = Crossing.new(s3)
+        client.get(bucket, @filename)
+      end.to raise_error(CrossingFileExistsException)
     end
 
     it 'will deliver the file contents without writing a file' do
