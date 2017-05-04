@@ -35,6 +35,16 @@ class Crossing
   def get_content(bucket, file)
     @s3_client.get_object(bucket: bucket, key: file).body.read
   end
+
+  def get_binary(bucket, file)
+    if File.exist?(file)
+      raise(CrossingFileExistsException,
+            "File #{file} already exists, will not overwrite.")
+    end
+
+    content = get_content(bucket, file)
+    File.open(file, 'wb') { |f| f.write(content) }
+  end
 end
 
 class CrossingError < StandardError
