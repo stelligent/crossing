@@ -29,7 +29,8 @@ class Crossing
     end
 
     content = get_content(bucket, file)
-    File.open(file, 'w') { |f| f.write(content) }
+
+    File.open(file, 'wb') { |f| f.write(content) }
   end
 
   def get_content(bucket, file)
