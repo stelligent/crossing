@@ -7,7 +7,7 @@ spec = Gem::Specification.new do |s|
   s.name          = 'crossing'
   s.executables  << 'crossing'
   s.license       = 'MIT'
-  s.version       = '0.0.3'
+  s.version       = '0.0.4'
   s.author        = ['John Ulick', 'Jonny Sywulak', 'Stelligent']
   s.email         = 'info@stelligent.com'
   s.homepage      = 'http://www.stelligent.com'
