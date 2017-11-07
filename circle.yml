@@ -3,7 +3,7 @@ deployment:
     branch: kmonihen
     commands:
       - git status
-      - ./publish.sh
+      - bash ./publish.sh
 machine:
   timezone:
     America/New_York
