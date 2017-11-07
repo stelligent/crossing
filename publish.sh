@@ -59,7 +59,8 @@ if [[ ${CIRCLE_BRANCH} == "master" ]];
 		echo "Building and pushing gem!"
 		#gem build crossing.gemspec
 		#gem push crossing-*.gem
-		exit 1;
+		exit 0
 	else
 		echo "Not in master, skipping gem build"
-		exit 1;
+		exit 0
+fi
