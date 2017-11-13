@@ -1,3 +1,9 @@
+deployment:
+  rubygems:
+    branch: kmonihen
+    commands:
+      - git status
+      - bash ./publish.sh
 machine:
   timezone:
     America/New_York
