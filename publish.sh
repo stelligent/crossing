@@ -48,8 +48,8 @@ gem build crossing.gemspec
 if [[ ${CIRCLE_BRANCH} == "master" ]];
         then
                 echo "Pushing gem from master!"
-                #gem push crossing-*.gem
-                #git push --tags
+                gem push crossing-*.gem
+                git push --tags
                 exit 0
         else
                 echo "Not in master, skipping gem push!"
