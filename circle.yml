@@ -1,6 +1,6 @@
 deployment:
   rubygems:
-    branch: kmonihen
+    branch: master
     commands:
       - git status
       - bash ./publish.sh
