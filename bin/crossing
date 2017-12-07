@@ -3,7 +3,7 @@
 require 'trollop'
 require 'crossing'
 
-SUB_COMMANDS = %w(get put).freeze
+SUB_COMMANDS = %w[get put].freeze
 global_opts = Trollop.options do
   opt :region, 'The region to look for the KMS Key in', default: 'us-east-1'
   banner 'utility for storing and retrieving files in S3 in a secure manner
