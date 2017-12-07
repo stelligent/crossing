@@ -13,13 +13,13 @@ spec = Gem::Specification.new do |s|
   s.homepage      = 'http://www.stelligent.com'
   s.summary       = 'Utility for storing objects in S3 while taking advantage ' \
                     'of client side envelope encryption with KMS.'
-  s.description   = <<eos
-The native AWS command line does not have an easy way to upload encrypted files
-to S3. The Ruby SDK has a way to do this, but not everyone wants to use it.
-This utility allows you to do client side encrypted uploads to S3 from the
-command line, which is useful for uploads from your CI system to docker
-containers.
-eos
+  s.description   = <<EOS
+  The native AWS command line does not have an easy way to upload encrypted files
+  to S3. The Ruby SDK has a way to do this, but not everyone wants to use it.
+  This utility allows you to do client side encrypted uploads to S3 from the
+  command line, which is useful for uploads from your CI system to docker
+  containers.
+EOS
   s.files       = ['lib/crossing.rb']
   s.require_paths << 'lib'
   s.require_paths << 'bin'

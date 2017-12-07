@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 require_relative '../lib/crossing'
 require 'securerandom'
 require 'spec_helper'
@@ -104,7 +105,7 @@ describe 'Crossing' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
-        .and_return(S3Result.new)
+                                        .and_return(S3Result.new)
 
       allow(File).to receive(:exist?)
       allow(File).to receive(:write)
@@ -120,7 +121,7 @@ describe 'Crossing' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
-        .and_return(S3Result.new)
+                                        .and_return(S3Result.new)
 
       allow(File).to receive(:open).with(@filename, expected_mode)
       allow(File).to receive(:exist?)
