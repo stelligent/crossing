@@ -19,7 +19,8 @@ class Crossing
   def put_content(bucket, filename, content)
     @s3_client.put_object(bucket: bucket,
                           key: File.basename(filename),
-                          body: content)
+                          body: content,
+			  tagging: "x-crossing-uploaded=true")
   end
 
   def get(bucket, file)
