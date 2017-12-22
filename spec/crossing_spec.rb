@@ -28,7 +28,7 @@ describe 'Crossing' do
       end.to raise_exception(CrossingMisconfigurationException)
     end
 
-    it 'will will allow only Aws::S3::Encryption::Client' do
+    it 'will allow only Aws::S3::Encryption::Client as first parameter' do
       expect(
         Crossing.new(
           Aws::S3::Encryption::Client.new(
@@ -37,6 +37,19 @@ describe 'Crossing' do
           )
         )
       ).to be_kind_of(Crossing)
+    end
+
+    it 'will allow only Aws:S3:Client as second parameter' do
+      expect(
+        Crossing.new(
+          Aws::S3::Encryption::Client.new(
+            encryption_key: 'asdfasdfasdfasdf',
+            region: 'us-east-1'
+          ),
+          Aws::S3::Client.new
+        )
+      ).to be_kind_of(Crossing)
+
     end
   end
 
@@ -114,6 +127,29 @@ describe 'Crossing' do
       allow(File).to receive(:write)
 
       client = Crossing.new(s3)
+      client.get(bucket, @filename)
+    end
+
+    it 'will retrieve an unencrypted file in s3' do
+      bucket = 'mock-bucket-name'
+
+      s3 = double('AWS::S3::Encryption::Client', stub_responses: true)
+      s3.stub_responses(:get_object,Aws::S3::Encryption::Errors::DecryptionError)
+      expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
+                                        .and_raise(Aws::S3::Encryption::Errors::DecryptionError)
+
+      s3_reg = double('AWS::S3::Client')
+      expect(s3_reg).to receive(:is_a?).and_return(true)
+      expect(s3_reg).to receive(:get_object).with(bucket: bucket, key: @filename)
+                                        .and_return(S3Result.new)
+
+      allow(File).to receive(:exist?)
+      allow(File).to receive(:write)
+
+      #init crossing with the enc s3 and regular s3 clients
+      client = Crossing.new(s3, s3_reg)
+
       client.get(bucket, @filename)
     end
 
