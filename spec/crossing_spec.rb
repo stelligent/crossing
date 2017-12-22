@@ -139,7 +139,7 @@ describe 'Crossing' do
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
                                         .and_raise(Aws::S3::Encryption::Errors::DecryptionError)
 
-      s3_reg = double('AWS::S3::Client')
+      s3_reg = double('AWS::S3::Client', region: 'us-east-1')
       expect(s3_reg).to receive(:is_a?).and_return(true)
       expect(s3_reg).to receive(:get_object).with(bucket: bucket, key: @filename)
                                         .and_return(S3Result.new)
