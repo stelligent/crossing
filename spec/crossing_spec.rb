@@ -15,6 +15,11 @@ class S3Result
 end
 
 describe 'Crossing' do
+
+  before :context do
+    Aws.config.update({region: 'us-east-1'})
+  end
+
   context 'it gives you useful errors' do
     it 'will tell you that you need to pass in a parameter' do
       expect do
@@ -51,6 +56,10 @@ describe 'Crossing' do
       ).to be_kind_of(Crossing)
 
     end
+  end
+
+  before :context do
+    Aws.config.update({region: 'us-east-1'})
   end
 
   context 'it can put files' do
@@ -107,6 +116,7 @@ describe 'Crossing' do
   end
 
   before :context do
+    Aws.config.update({region: 'us-east-1'})
     @filename = 'mock-file-name'
   end
 
