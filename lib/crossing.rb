@@ -42,6 +42,14 @@ class Crossing
     File.open(file, 'wb') { |f| f.write(content) }
   end
 
+  def get_multiple(bucket, filelist)
+    filelist.each {|file| get(bucket, file)}
+  end
+
+  def put_multiple(bucket, filelist)
+    filelist.each {|file| put(bucket, file)}
+  end
+
   def get_content(bucket, file)
     @s3_client.get_object(bucket: bucket, key: file).body.read
 

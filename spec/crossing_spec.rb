@@ -77,6 +77,22 @@ describe 'Crossing' do
       client.put(bucket, filename)
     end
 
+    it 'will store multiple files in s3' do
+      bucket = 'mock-bucket-name'
+      filelist = ['crossing.gemspec', 'spec/crossing_spec.rb', 'Rakefile']
+
+      s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
+      filelist.each {|file| expect(s3).to receive(:put_object)
+                                          .with(bucket: bucket,
+                                                key: File.basename(file),
+                                                body: File.new(file, 'r').read,
+                                                tagging: "x-crossing-uploaded=true")}
+
+      client = Crossing.new(s3)
+      client.put_multiple(bucket, filelist)
+    end
+
     it 'will upload a file at any path' do
       s3 = double('AWS::S3::Encryption::Client')
       bucket = 'mock-bucket-name'
@@ -161,6 +177,22 @@ describe 'Crossing' do
       client = Crossing.new(s3, s3_reg)
 
       client.get(bucket, @filename)
+    end
+
+    it 'will retrieve multiple files from s3' do
+      bucket = 'mock-bucket-name'
+      filelist = ["mock-file-name1", "mock-file-name2", "mock-file-name3"]
+
+      s3 = double('AWS::S3::Encryption::Client')
+      expect(s3).to receive(:is_a?).and_return(true)
+      filelist.each {|file| expect(s3).to receive(:get_object)
+                                          .with(bucket: bucket, key: file)
+                                          .and_return(S3Result.new)}
+
+      client = Crossing.new(s3)
+      client.get_multiple(bucket, filelist)
+
+      filelist.each {|file| File.delete(file)}
     end
 
     it 'will use wb mode' do
