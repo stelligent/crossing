@@ -1,6 +1,6 @@
 deployment:
   rubygems:
-    branch: download-unencrypted-files
+    branch: master
     commands:
       - git status
       - bash ./publish.sh
