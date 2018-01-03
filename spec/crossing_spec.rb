@@ -15,9 +15,8 @@ class S3Result
 end
 
 describe 'Crossing' do
-
   before :context do
-    Aws.config.update({region: 'us-east-1'})
+    Aws.config.update(region: 'us-east-1')
   end
 
   context 'it gives you useful errors' do
@@ -54,12 +53,11 @@ describe 'Crossing' do
           Aws::S3::Client.new
         )
       ).to be_kind_of(Crossing)
-
     end
   end
 
   before :context do
-    Aws.config.update({region: 'us-east-1'})
+    Aws.config.update(region: 'us-east-1')
   end
 
   context 'it can put files' do
@@ -72,7 +70,7 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: filename,
                                               body: content,
-                                              tagging: "x-crossing-uploaded=true")
+                                              tagging: 'x-crossing-uploaded=true')
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -83,11 +81,13 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
-      filelist.each {|file| expect(s3).to receive(:put_object)
-                                          .with(bucket: bucket,
-                                                key: File.basename(file),
-                                                body: File.new(file, 'r').read,
-                                                tagging: "x-crossing-uploaded=true")}
+      filelist.each do |file|
+        expect(s3).to receive(:put_object)
+          .with(bucket: bucket,
+                key: File.basename(file),
+                body: File.new(file, 'r').read,
+                tagging: 'x-crossing-uploaded=true')
+      end
 
       client = Crossing.new(s3)
       client.put_multiple(bucket, filelist)
@@ -102,7 +102,7 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: 'crossing_spec.rb',
                                               body: content,
-                                              tagging: "x-crossing-uploaded=true")
+                                              tagging: 'x-crossing-uploaded=true')
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -125,14 +125,14 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: filename,
                                               body: content,
-                                              tagging: "x-crossing-uploaded=true")
+                                              tagging: 'x-crossing-uploaded=true')
       client = Crossing.new(s3)
       client.put_content(bucket, filename, content)
     end
   end
 
   before :context do
-    Aws.config.update({region: 'us-east-1'})
+    Aws.config.update(region: 'us-east-1')
     @filename = 'mock-file-name'
   end
 
@@ -160,7 +160,7 @@ describe 'Crossing' do
       bucket = 'mock-bucket-name'
 
       s3 = double('AWS::S3::Encryption::Client', stub_responses: true)
-      s3.stub_responses(:get_object,Aws::S3::Encryption::Errors::DecryptionError)
+      s3.stub_responses(:get_object, Aws::S3::Encryption::Errors::DecryptionError)
       expect(s3).to receive(:is_a?).and_return(true)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
                                         .and_raise(Aws::S3::Encryption::Errors::DecryptionError)
@@ -168,12 +168,12 @@ describe 'Crossing' do
       s3_reg = double('AWS::S3::Client', region: 'us-east-1')
       expect(s3_reg).to receive(:is_a?).and_return(true)
       expect(s3_reg).to receive(:get_object).with(bucket: bucket, key: @filename)
-                                        .and_return(S3Result.new)
+                                            .and_return(S3Result.new)
 
       allow(File).to receive(:exist?)
       allow(File).to receive(:write)
 
-      #init crossing with the enc s3 and regular s3 clients
+      # init crossing with the enc s3 and regular s3 clients
       client = Crossing.new(s3, s3_reg)
 
       client.get(bucket, @filename)
@@ -181,18 +181,20 @@ describe 'Crossing' do
 
     it 'will retrieve multiple files from s3' do
       bucket = 'mock-bucket-name'
-      filelist = ["mock-file-name1", "mock-file-name2", "mock-file-name3"]
+      filelist = ['mock-file-name1', 'mock-file-name2', 'mock-file-name3']
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
-      filelist.each {|file| expect(s3).to receive(:get_object)
-                                          .with(bucket: bucket, key: file)
-                                          .and_return(S3Result.new)}
+      filelist.each do |file|
+        expect(s3).to receive(:get_object)
+          .with(bucket: bucket, key: file)
+          .and_return(S3Result.new)
+      end
 
       client = Crossing.new(s3)
       client.get_multiple(bucket, filelist)
 
-      filelist.each {|file| File.delete(file)}
+      filelist.each { |file| File.delete(file) }
     end
 
     it 'will use wb mode' do
