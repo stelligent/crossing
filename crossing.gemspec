@@ -8,7 +8,7 @@ spec = Gem::Specification.new do |s|
   s.executables  << 'crossing'
   s.license       = 'MIT'
   s.version       = '0.0.0'
-  s.author        = ['John Ulick', 'Jonny Sywulak', 'Stelligent']
+  s.author        = ['John Ulick', 'Jonny Sywulak', 'Keith Monihen', 'Stelligent']
   s.email         = 'info@stelligent.com'
   s.homepage      = 'http://www.stelligent.com'
   s.summary       = 'Utility for storing objects in S3 while taking advantage ' \

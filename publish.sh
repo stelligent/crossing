@@ -2,6 +2,13 @@
 set -o pipefail
 
 #
+# Set the current major and minor version
+# 0.1.x
+#
+major_version='0'
+minor_version='1'
+
+#
 # Set the API key gem credentials
 #
 set +x
@@ -23,17 +30,18 @@ git config --global user.name "build"
 #
 # Pull current version number from the git tags
 #
-current_version=$(ruby -e 'tags=`git tag -l v0\.0\.*`' \
-                       -e 'p tags.lines.map { |tag| tag.sub(/v0.0./, "").chomp.to_i }.max')
+current_version=$(ruby -e 'tags=`git tag -l v'$major_version'\.'$minor_version'\.*`' \
+                       -e 'p tags.lines.map { |tag| tag.sub(/v'$major_version'.'$minor_version'./, "").chomp.to_i }.max')
+
 
 #
 # Increment the version number, update the gemspect and add version tag to git
 #
 if [[ ${current_version} == nil ]];
 then
-  new_version='0.1.0'
+  new_version=$major_version.$minor_version.0
 else
-  new_version=0.0.$((current_version+1))
+  new_version=$major_version.$minor_version.$((current_version+1))
 fi
 
 sed -i "s/0\.0\.0/${new_version}/g" crossing.gemspec
