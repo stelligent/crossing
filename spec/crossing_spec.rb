@@ -70,7 +70,7 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: filename,
                                               body: content,
-                                              tagging: 'x-crossing-uploaded=true')
+                                              metadata: { 'x-crossing-uploaded' => 'true' })
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -86,7 +86,7 @@ describe 'Crossing' do
           .with(bucket: bucket,
                 key: File.basename(file),
                 body: File.new(file, 'r').read,
-                tagging: 'x-crossing-uploaded=true')
+                metadata: { 'x-crossing-uploaded' => 'true' })
       end
 
       client = Crossing.new(s3)
@@ -102,7 +102,7 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: 'crossing_spec.rb',
                                               body: content,
-                                              tagging: 'x-crossing-uploaded=true')
+                                              metadata: { 'x-crossing-uploaded' => 'true' })
       client = Crossing.new(s3)
       client.put(bucket, filename)
     end
@@ -125,7 +125,7 @@ describe 'Crossing' do
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: filename,
                                               body: content,
-                                              tagging: 'x-crossing-uploaded=true')
+                                              metadata: { 'x-crossing-uploaded' => 'true' })
       client = Crossing.new(s3)
       client.put_content(bucket, filename, content)
     end
