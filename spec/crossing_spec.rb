@@ -15,9 +15,6 @@ class S3Result
 end
 
 describe 'Crossing' do
-  before :context do
-    Aws.config.update(region: 'us-east-1')
-  end
 
   context 'it gives you useful errors' do
     it 'will tell you that you need to pass in a parameter' do
@@ -50,14 +47,10 @@ describe 'Crossing' do
             encryption_key: 'asdfasdfasdfasdf',
             region: 'us-east-1'
           ),
-          Aws::S3::Client.new
+          Aws::S3::Client.new(region: 'us-east-1')
         )
       ).to be_kind_of(Crossing)
     end
-  end
-
-  before :context do
-    Aws.config.update(region: 'us-east-1')
   end
 
   context 'it can put files' do
@@ -67,6 +60,7 @@ describe 'Crossing' do
       filename = 'crossing.gemspec'
       content = File.new(filename, 'r').read
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: filename,
                                               body: content,
@@ -81,6 +75,7 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       filelist.each do |file|
         expect(s3).to receive(:put_object)
           .with(bucket: bucket,
@@ -99,6 +94,7 @@ describe 'Crossing' do
       filename = 'spec/crossing_spec.rb'
       content = File.new(filename, 'r').read
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       expect(s3).to receive(:put_object).with(bucket: bucket,
                                               key: 'crossing_spec.rb',
                                               body: content,
@@ -110,6 +106,7 @@ describe 'Crossing' do
     it 'will raise an error for missing file' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       file = SecureRandom.uuid
       expect do
         Crossing.new(s3).put('bucket', file)
@@ -119,6 +116,7 @@ describe 'Crossing' do
     it 'will raw content in s3' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       bucket = 'mock-bucket-name'
       filename = 'crossing.gemspec'
       content = File.new(filename, 'r').read
@@ -132,7 +130,6 @@ describe 'Crossing' do
   end
 
   before :context do
-    Aws.config.update(region: 'us-east-1')
     @filename = 'mock-file-name'
   end
 
@@ -146,6 +143,7 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
                                         .and_return(S3Result.new)
 
@@ -185,6 +183,7 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       filelist.each do |file|
         expect(s3).to receive(:get_object)
           .with(bucket: bucket, key: file)
@@ -203,6 +202,7 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       expect(s3).to receive(:get_object).with(bucket: bucket, key: @filename)
                                         .and_return(S3Result.new)
 
@@ -217,6 +217,7 @@ describe 'Crossing' do
     it 'will not overwrite local files' do
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       allow(File).to receive(:exist?).and_return true
 
       bucket = 'mock-bucket-name'
@@ -234,6 +235,7 @@ describe 'Crossing' do
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
+      expect(s3).to receive(:client).with(no_args)
       expect(s3).to receive(:get_object).with(bucket: bucket,
                                               key: @filename).and_return(S3Result.new)
       expect(
