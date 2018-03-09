@@ -26,7 +26,7 @@ class Crossing
 
   def put_content(bucket, filename, content)
     @s3_client_encrypted.put_object(bucket: bucket,
-                                    key: File.basename(filename),
+                                    key: filename,
                                     body: content,
                                     metadata: { 'x-crossing-uploaded' => 'true' })
   end
