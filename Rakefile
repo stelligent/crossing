@@ -7,7 +7,6 @@ begin
 rescue LoadError
   print "Unable to load rspec/core/rake_task, spec tests missing\n"
 end
-
 begin
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new(:rubocop)
