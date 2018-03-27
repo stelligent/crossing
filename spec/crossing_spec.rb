@@ -15,7 +15,6 @@ class S3Result
 end
 
 describe 'Crossing' do
-
   context 'it gives you useful errors' do
     it 'will tell you that you need to pass in a parameter' do
       expect do
@@ -244,3 +243,4 @@ describe 'Crossing' do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

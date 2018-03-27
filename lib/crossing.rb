@@ -2,11 +2,7 @@ require 'aws-sdk'
 
 # Documentation incoming
 class Crossing
-  def initialize(s3_client_encrypted, s3_client_unencrypted = nil)
-    raise CrossingMisconfigurationException if s3_client_encrypted.nil?
-    raise CrossingMisconfigurationException unless s3_client_encrypted.is_a? Aws::S3::Encryption::Client
-    @s3_client_encrypted = s3_client_encrypted
-
+  def setup_unencrypted_client(s3_client_encrypted, s3_client_unencrypted)
     if !s3_client_unencrypted.nil?
       raise CrossingMisconfigurationException unless s3_client_unencrypted.is_a? Aws::S3::Client
       @s3_client_unencrypted = s3_client_unencrypted
@@ -14,6 +10,16 @@ class Crossing
       # assign regular s3 client
       @s3_client_unencrypted = s3_client_encrypted.client
     end
+  end
+
+  def initialize(s3_client_encrypted, s3_client_unencrypted = nil)
+    raise CrossingMisconfigurationException if s3_client_encrypted.nil?
+    unless s3_client_encrypted.is_a? Aws::S3::Encryption::Client
+      raise CrossingMisconfigurationException
+    end
+    @s3_client_encrypted = s3_client_encrypted
+
+    setup_unencrypted_client s3_client_encrypted, s3_client_unencrypted
   end
 
   def put(bucket, filename)
