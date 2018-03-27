@@ -17,4 +17,7 @@ jobs:
       - run:
           name: Rspec tests
           command: bundle exec rspec --color --require spec_helper --format NyanCatFormatter spec
+      - run:
+          name: Publish gem
+          command: bash ./publish.sh
 
