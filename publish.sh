@@ -11,6 +11,7 @@ minor_version='1'
 #
 # Set the API key gem credentials
 #
+mkdir -p ~/.gem
 set +x
 if [[ -z ${rubygems_api_key} ]];
 then
