@@ -38,3 +38,5 @@ ehthumbs.db
 Thumbs.db
 
 coverage
+
+/Gemfile.lock
