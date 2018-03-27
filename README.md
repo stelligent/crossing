@@ -9,7 +9,7 @@ This utility allows you to do client side encrypted uploads to S3 from the comma
 
 ### :children_crossing: Installation
 
-Crossing requires Ruby 1.9.3 (or higher). 1.9.3 is the default ruby install on most modern operating systems and can be installed from your package manager (`apt-get install ruby` or similar).
+Crossing requires Ruby 2.2.9 (or higher). 2.2.9 is the oldest version of ruby still supported by the Ruby language authors.
 
 To install the gem:
 
