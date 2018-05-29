@@ -1,12 +1,9 @@
 require 'rake'
 
-# rubocop:disable Style/SpaceAroundOperators
-# rubocop:disable Lint/UselessAssignment
-# rubocop:disable Style/ExtraSpacing
 # rubocop:disable Metrics/BlockLength
-spec = Gem::Specification.new do |s|
-  s.name          = 'crossing'
-  s.executables  << 'crossing'
+Gem::Specification.new do |s|
+  s.name = 'crossing'
+  s.executables << 'crossing'
   s.license       = 'MIT'
   s.version       = '0.0.0'
   s.author        = ['John Ulick', 'Jonny Sywulak', 'Keith Monihen', 'Stelligent']
@@ -21,7 +18,7 @@ spec = Gem::Specification.new do |s|
   command line, which is useful for uploads from your CI system to docker
   containers.
 DESC
-  s.files       = ['lib/crossing.rb']
+  s.files = ['lib/crossing.rb']
   s.require_paths << 'lib'
   s.require_paths << 'bin'
   s.required_ruby_version = '>= 2.2'
@@ -35,7 +32,4 @@ DESC
   s.add_runtime_dependency('aws-sdk', '~> 2')
   s.add_runtime_dependency('trollop', '=2.1.2')
 end
-# rubocop:enable Style/SpaceAroundOperators
-# rubocop:enable Lint/UselessAssignment
-# rubocop:enable Style/ExtraSpacing
 # rubocop:enable Metrics/BlockLength
