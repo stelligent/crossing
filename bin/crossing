@@ -2,6 +2,10 @@
 
 require 'trollop'
 require 'crossing'
+begin
+  require 'aws-sdk-kms'
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+end
 
 SUB_COMMANDS = %w[get put].freeze
 global_opts = Trollop.options do
