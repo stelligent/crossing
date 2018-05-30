@@ -24,7 +24,7 @@ describe 'Crossing' do
 
     it 'will tell you that you need to pass in an S3 client' do
       expect do
-        Crossing.new(Aws::S3::Client.new(region: 'us-east-1'))
+        Crossing.new(Aws::S3::Client.new(region: 'us-east-1', stub_responses: true))
       end.to raise_exception(CrossingMisconfigurationException)
     end
 
@@ -33,7 +33,8 @@ describe 'Crossing' do
         Crossing.new(
           Aws::S3::Encryption::Client.new(
             encryption_key: 'asdfasdfasdfasdf',
-            region: 'us-east-1'
+            region: 'us-east-1',
+            stub_responses: true
           )
         )
       ).to be_kind_of(Crossing)
@@ -44,9 +45,10 @@ describe 'Crossing' do
         Crossing.new(
           Aws::S3::Encryption::Client.new(
             encryption_key: 'asdfasdfasdfasdf',
-            region: 'us-east-1'
+            region: 'us-east-1',
+            stub_responses: true
           ),
-          Aws::S3::Client.new(region: 'us-east-1')
+          Aws::S3::Client.new(region: 'us-east-1', stub_responses: true)
         )
       ).to be_kind_of(Crossing)
     end
