@@ -21,7 +21,7 @@ DESC
   s.files = ['lib/crossing.rb']
   s.require_paths << 'lib'
   s.require_paths << 'bin'
-  s.required_ruby_version = '>= 2.2'
+  s.required_ruby_version = '>= 2.5'
 
   s.add_development_dependency('cucumber')
   s.add_development_dependency('nyan-cat-formatter')
