@@ -19,6 +19,7 @@ class Crossing
     unless s3_client_encrypted.is_a? Aws::S3::Encryption::Client
       raise CrossingMisconfigurationException
     end
+
     @s3_client_encrypted = s3_client_encrypted
 
     setup_unencrypted_client s3_client_encrypted, s3_client_unencrypted
