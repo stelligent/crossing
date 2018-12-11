@@ -29,7 +29,7 @@ DESC
   s.add_development_dependency('rubygems-tasks')
   s.add_development_dependency('simplecov')
 
-  s.add_runtime_dependency('aws-sdk', '>= 2.0.0')
-  s.add_runtime_dependency('trollop', '~ 2')
+  s.add_runtime_dependency('aws-sdk-s3')
+  s.add_runtime_dependency('trollop')
 end
 # rubocop:enable Metrics/BlockLength

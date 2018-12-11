@@ -1,9 +1,4 @@
-require 'aws-sdk'
-# aws-sdk v3 compatibility
-begin
-  require 'aws-sdk-s3'
-rescue LoadError # rubocop:disable Lint/HandleExceptions
-end
+require 'aws-sdk-s3'
 
 # Documentation incoming
 class Crossing
