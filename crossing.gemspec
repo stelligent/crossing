@@ -1,5 +1,3 @@
-require 'rake'
-
 # rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |s|
   s.name = 'crossing'
