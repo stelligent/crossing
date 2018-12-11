@@ -6,7 +6,7 @@ set -o pipefail
 # 0.1.x
 #
 major_version='0'
-minor_version='1'
+minor_version='2'
 
 #
 # Set the API key gem credentials
