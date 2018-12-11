@@ -1,5 +1,3 @@
-require 'rake'
-
 # rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |s|
   s.name = 'crossing'
@@ -21,7 +19,7 @@ DESC
   s.files = ['lib/crossing.rb']
   s.require_paths << 'lib'
   s.require_paths << 'bin'
-  s.required_ruby_version = '>= 2.2'
+  s.required_ruby_version = '>= 2.5'
 
   s.add_development_dependency('cucumber')
   s.add_development_dependency('nyan-cat-formatter')
@@ -29,7 +27,7 @@ DESC
   s.add_development_dependency('rubygems-tasks')
   s.add_development_dependency('simplecov')
 
-  s.add_runtime_dependency('aws-sdk', '>= 2.0.0')
-  s.add_runtime_dependency('trollop', '~ 2')
+  s.add_runtime_dependency('aws-sdk-s3')
+  s.add_runtime_dependency('trollop')
 end
 # rubocop:enable Metrics/BlockLength

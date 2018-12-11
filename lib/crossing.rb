@@ -1,15 +1,11 @@
-require 'aws-sdk'
-# aws-sdk v3 compatibility
-begin
-  require 'aws-sdk-s3'
-rescue LoadError # rubocop:disable Lint/HandleExceptions
-end
+require 'aws-sdk-s3'
 
 # Documentation incoming
 class Crossing
   def setup_unencrypted_client(s3_client_encrypted, s3_client_unencrypted)
     if !s3_client_unencrypted.nil?
       raise CrossingMisconfigurationException unless s3_client_unencrypted.is_a? Aws::S3::Client
+
       @s3_client_unencrypted = s3_client_unencrypted
     else
       # assign regular s3 client
@@ -19,9 +15,11 @@ class Crossing
 
   def initialize(s3_client_encrypted, s3_client_unencrypted = nil)
     raise CrossingMisconfigurationException if s3_client_encrypted.nil?
+
     unless s3_client_encrypted.is_a? Aws::S3::Encryption::Client
       raise CrossingMisconfigurationException
     end
+
     @s3_client_encrypted = s3_client_encrypted
 
     setup_unencrypted_client s3_client_encrypted, s3_client_unencrypted

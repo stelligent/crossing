@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.2.9-browsers
+      - image: circleci/ruby:2.5.1-browsers
     steps:
       - checkout
       - run:
@@ -20,4 +20,3 @@ jobs:
       - run:
           name: Publish gem
           command: bash ./publish.sh
-
