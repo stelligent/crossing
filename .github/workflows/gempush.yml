@@ -25,7 +25,7 @@ jobs:
     - name: Rubocop lint
       run: bundle exec rubocop -D
     - name: Rspec tests
-      run: bundle exec rspec --color --require spec_helper --format NyanCatFormatter spec
+      run: bundle exec rspec --color --require spec_helper spec
 
   release:
     name: Release

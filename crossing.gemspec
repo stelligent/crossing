@@ -19,8 +19,7 @@ DESC
   s.require_paths << 'bin'
   s.required_ruby_version = '>= 2.5'
 
-  s.add_development_dependency('cucumber')
-  s.add_development_dependency('nyan-cat-formatter')
+  s.add_development_dependency('rspec')
   s.add_development_dependency('rubocop')
   s.add_development_dependency('rubygems-tasks')
   s.add_development_dependency('simplecov')
