@@ -1,34 +1,50 @@
 # :children_crossing: crossing
 
-build status: [![CircleCI](https://circleci.com/gh/stelligent/crossing.svg?style=svg)](https://circleci.com/gh/stelligent/crossing)
+![](https://github.com/stelligent/crossing/workflows/crossing/badge.svg)
+## Overview
+Crossing is a utility for storing objects in S3 while taking advantage of client side envelope encryption with KMS.  The native AWS CLI tool does not have an easy way to client-side-encrypted-upload's into S3.
 
-### :children_crossing: Description
-Crossing is a utility for storing objects in S3 while taking advantage of client side envelope encryption with KMS.  The native AWS CLI tool does not have an easy way to client-side-encrypted-upload's into S3.  The Ruby SDK _does_ have an easy way to do this, but not everyone wants drop to Ruby.  
+This utility allows you to do client side encrypted uploads to S3 from the command line, allowing you to quickly upload files to S3 securely.
 
-This utility allows you to do client side encrypted uploads to S3 from the command line, allowing you to quickly upload files to S3 securely. 
+## Installation
 
-### :children_crossing: Installation
-
-Crossing requires Ruby 2.2.9 (or higher). 2.2.9 is the oldest version of ruby still supported by the Ruby language authors.
+Crossing requires Ruby 2.5 (or higher)
 
 To install the gem:
+```
+  gem install crossing
+```
+## Usage
+Crossing is designed to be simple to use.
 
-    gem install crossing
+```
+> crossing --help
+Utility for storing and retrieving files in S3 in a secure manner
+  available commands:
 
-### :children_crossing: Usage
-Crossing is designed to be dead simple to use. To upload, you just need to provide a filepath, bucket location, region and which KMS key to use.
+    put -- store a file in S3
+    get -- retrieve a file from S3
 
-    crossing put \
-      --file path/to/your/src/file \
-      --bucket your-bucket \
-      --kmskeyid abcde-12345-abcde-12345
+  use --help with either command for more information.
 
-Downloading is basically the same:
+  -r, --region=<s>    The AWS region to interact with (default: us-east-1)
+  -h, --help          Show this message
+```
 
-    crossing get \
-      --file path/to/your/dest/file \
-      --bucket your-bucket
+###  Upload
+```
+  crossing put \
+    --file path/to/your/src/file \
+    --bucket your-bucket \
+    --kmskeyid abcde-12345-abcde-12345
+```
 
-### :children_crossing: License
+### Download
+```
+  crossing get \
+    --file path/to/your/dest/file \
+    --bucket your-bucket
+```
+## License
 
 Refer to [LICENSE.md](LICENSE.md)

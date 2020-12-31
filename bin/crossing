@@ -9,8 +9,7 @@ end
 
 SUB_COMMANDS = %w[get put].freeze
 global_opts = Trollop.options do
-  opt :region, 'The region to look for the KMS Key in', default: 'us-east-1'
-  banner 'utility for storing and retrieving files in S3 in a secure manner
+  banner 'Utility for storing and retrieving files in S3 in a secure manner
   available commands:
 
     put -- store a file in S3
@@ -18,6 +17,7 @@ global_opts = Trollop.options do
 
   use --help with either command for more information.
   '
+  opt :region, 'The AWS region to interact with', default: 'us-east-1'
   stop_on SUB_COMMANDS
 end
 
@@ -44,7 +44,8 @@ cmd_opts[:kmskeyid] ||= '_nokey_decrypt_'
 kms = Aws::KMS::Client.new region: global_opts[:region]
 s3 = Aws::S3::Encryption::Client.new(
   kms_key_id: cmd_opts[:kmskeyid],
-  kms_client: kms
+  kms_client: kms,
+  region: global_opts[:region]
 )
 
 crossing = Crossing.new(s3)
