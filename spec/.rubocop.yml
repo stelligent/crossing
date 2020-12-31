@@ -1,4 +1,4 @@
-HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
-Metrics/LineLength:
+Layout/LineLength:
   Max: 160

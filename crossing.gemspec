@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |s|
   s.name = 'crossing'
   s.executables << 'crossing'
@@ -29,4 +28,3 @@ DESC
   s.add_runtime_dependency('aws-sdk-s3')
   s.add_runtime_dependency('trollop')
 end
-# rubocop:enable Metrics/BlockLength
