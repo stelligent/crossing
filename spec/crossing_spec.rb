@@ -7,6 +7,7 @@ require 'spec_helper'
 
 class S3Result
   attr_accessor :body
+
   def initialize
     @body = self
   end
@@ -74,7 +75,7 @@ describe 'Crossing' do
 
     it 'will store multiple files in s3' do
       bucket = 'mock-bucket-name'
-      filelist = ['crossing.gemspec', 'spec/crossing_spec.rb', 'Rakefile']
+      filelist = %w[crossing.gemspec spec/crossing_spec.rb Rakefile]
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)
@@ -182,7 +183,7 @@ describe 'Crossing' do
 
     it 'will retrieve multiple files from s3' do
       bucket = 'mock-bucket-name'
-      filelist = ['mock-file-name1', 'mock-file-name2', 'mock-file-name3']
+      filelist = %w[mock-file-name1 mock-file-name2 mock-file-name3]
 
       s3 = double('AWS::S3::Encryption::Client')
       expect(s3).to receive(:is_a?).and_return(true)

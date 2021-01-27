@@ -64,7 +64,7 @@ class Crossing
 
   # If a decryption exception occurs, warn and get the object without decryption
   rescue Aws::S3::Encryption::Errors::DecryptionError
-    STDERR.puts "WARNING: #{file} decryption failed. Retreiving the object without encryption."
+    warn("WARNING: #{file} decryption failed. Retreiving the object without encryption.")
     @s3_client_unencrypted.get_object(bucket: bucket, key: file).body.read
   end
 end

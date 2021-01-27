@@ -1,6 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.5.1
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
 Style/FrozenStringLiteralComment:
   Enabled: false
